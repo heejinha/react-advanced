@@ -1,9 +1,9 @@
 import Page from '../../components/Page';
 import Title from '../../components/Title';
 import Navbar from '../../components/Navbar';
-import ProductItem from '../../components/ProductItem';
 import ProductApi from 'shared/api/ProductApi';
 import { Component } from 'react';
+import OrderAbleProductItem from './OrderAbleProductItem';
 
 class ProductPage extends Component {
 	constructor(props) {
@@ -38,7 +38,7 @@ class ProductPage extends Component {
 						{
 							this.state.productList.map(product => (
 								<li key={product.id}>
-									<ProductItem product={product} />
+									<OrderAbleProductItem product={product} />
 								</li>
 							))
 						}
