@@ -2,6 +2,8 @@ import { Component, createRef } from 'react';
 import ProductPage from './pages/ProductPage';
 import OrderPage from './pages/OrderPage';
 import CartPage from './pages/CartPage';
+import MyReact from './lib/MyReact';
+import createEventEmitter from 'shared/lib/EventEmitter';
 
 const App = () => (
 	<>
@@ -11,10 +13,84 @@ const App = () => (
 	</>
 );
 
-export default App;
+// export default App;
 
 
 
+
+// MyReact - Context 테스트
+const countContext = MyReact.createContext({
+	count: 0,
+	setCount: () => {}
+});
+
+class CountProvider extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			count: 0
+		}
+	}
+
+	render() {
+		const value = {
+			count: this.state.count,
+			setCount: (count) => this.setState({ count })
+		}
+
+		return (
+			<countContext.Provider value={value}>
+				{ this.props.children }
+			</countContext.Provider>
+		);
+	}
+}
+
+const Count = () => {
+	return (
+		<countContext.Consumer>
+			{ (value) => (<div>{ value.count }</div>) }
+		</countContext.Consumer>
+	);
+};
+
+const PlusButton = () => {
+	return (
+		<countContext.Consumer>
+			{
+				(value) => (
+					<button onClick={ () => value.setCount(value.count + 1) }>
+						+
+					</button>
+				)
+			}
+		</countContext.Consumer>
+	);
+}
+
+export default () => (
+	<CountProvider>
+		<Count />
+		<PlusButton />
+	</CountProvider>
+);
+
+
+
+
+// eventEmitter 테스트
+const eventEmitter = createEventEmitter(0);
+const logger = (value) => console.log(value);
+
+eventEmitter.on(logger);
+console.log(eventEmitter.get());
+eventEmitter.set(1);
+
+
+
+
+// MyComponent 테스트
 class Foo extends Component {
 	render() {
 		return (
