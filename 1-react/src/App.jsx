@@ -1,19 +1,16 @@
 import { Component, createRef } from 'react';
-import ProductPage from './pages/ProductPage';
-import OrderPage from './pages/OrderPage';
-import CartPage from './pages/CartPage';
 import MyReact from './lib/MyReact';
-import createEventEmitter from 'shared/lib/EventEmitter';
+import { Router, Routes } from './lib/MyRouter';
 
-const App = () => (
-	<>
-		{/*<ProductPage />*/}
-		{/*<OrderPage />*/}
-		<CartPage />
-	</>
-);
+const App = () => {
+	return (
+		<Router>
+			<Routes />
+		</Router>
+	);
+};
 
-// export default App;
+export default App;
 
 
 
@@ -69,23 +66,23 @@ const PlusButton = () => {
 	);
 }
 
-export default () => (
-	<CountProvider>
-		<Count />
-		<PlusButton />
-	</CountProvider>
-);
+// export default () => (
+// 	<CountProvider>
+// 		<Count />
+// 		<PlusButton />
+// 	</CountProvider>
+// );
 
 
 
 
 // eventEmitter 테스트
-const eventEmitter = createEventEmitter(0);
-const logger = (value) => console.log(value);
-
-eventEmitter.on(logger);
-console.log(eventEmitter.get());
-eventEmitter.set(1);
+// const eventEmitter = createEventEmitter(0);
+// const logger = (value) => console.log(value);
+//
+// eventEmitter.on(logger);
+// console.log(eventEmitter.get());
+// eventEmitter.set(1);
 
 
 
