@@ -1,7 +1,4 @@
-import { Component, createContext } from 'react';
-import OrderPage from '../pages/OrderPage';
-import CartPage from '../pages/CartPage';
-import ProductPage from '../pages/ProductPage';
+import { Children, Component, createContext, Fragment, isValidElement } from 'react';
 
 const routerContext = createContext({});
 routerContext.displayName = 'RouterContext';
@@ -48,23 +45,35 @@ class Router extends Component {
 	}
 }
 
-const Routes = () => (
-	<routerContext.Consumer>
-		{
-			({ path }) => (
-				<>
-					{ path === '/order' && <OrderPage /> }
-					{ path === '/cart' && <CartPage /> }
-					{ !['/cart', '/order'].includes(path) && <ProductPage /> }
-				</>
-			)
-		}
-	</routerContext.Consumer>
-);
+const Routes = ({ children }) => {
+	return (
+		<routerContext.Consumer>
+			{
+				({ path: inputPath }) => {
+					let selectedRoute = null;
+					Children.forEach(children, child => {
+						if (!isValidElement(child)) return;
+						if (child.type === Fragment) return;
+
+						const { path, element } = child.props;
+						if (!path || !element) return;
+						if (path !== inputPath.replace(/\?.*$/, '')) return;
+
+						selectedRoute = element;
+					});
+					return selectedRoute;
+				}
+			}
+		</routerContext.Consumer>
+	)
+};
+
+const Route = () => null;
 
 export {
 	routerContext,
 	Router,
 	Routes,
+	Route,
 	Link
 }
