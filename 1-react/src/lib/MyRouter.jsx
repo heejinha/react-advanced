@@ -25,10 +25,27 @@ class Router extends Component {
 		}
 
 		this.handleChangePath = this.handleChangePath.bind(this);
+		this.handleOnPopState = this.handleOnPopState.bind(this);
 	}
 
 	handleChangePath(path) {
 		this.setState({ path });
+		window.history.pushState({ path }, '', path);
+	}
+
+	handleOnPopState(event) {
+		const nextPath = event.state && event.state.path;
+		if (!nextPath) return;
+		this.setState({ path: nextPath });
+	}
+
+	componentDidMount() {
+		window.addEventListener('popstate', this.handleOnPopState);
+		window.history.replaceState({ path: this.state.path }, '');
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('popstate', this.handleOnPopState);
 	}
 
 	render() {
