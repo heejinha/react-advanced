@@ -18,7 +18,7 @@ const App = () => {
 	);
 };
 
-// export default App;
+export default App;
 
 
 class Header extends Component {
@@ -64,12 +64,12 @@ const withLogging = WrappedComponent => {
 const EnhancedHeader = withLogging(Header);
 const EnhancedButton = withLogging(Button);
 
-export default () => (
-	<>
-		<EnhancedHeader />
-		<EnhancedButton />
-	</>
-);
+// export default () => (
+// 	<>
+// 		<EnhancedHeader />
+// 		<EnhancedButton />
+// 	</>
+// );
 
 
 

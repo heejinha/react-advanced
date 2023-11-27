@@ -5,6 +5,7 @@ import ProductItem from '../../components/ProductItem';
 import OrderForm from './OrderForm';
 import PaymentButton from './PaymentButton';
 import ProductApi from 'shared/api/ProductApi';
+import { withRouter } from '../../lib/MyRouter';
 
 const fakeProduct = {
 	"id": "CACDA421",
@@ -34,7 +35,9 @@ class CartPage extends Component {
 	}
 
 	handleSubmit(params) {
-		console.log(params)
+		console.log(params);
+		// 결제 성공 후 페이지 이동
+		this.props.navigate('/order');
 	}
 
 	async componentDidMount() {
@@ -68,4 +71,4 @@ class CartPage extends Component {
 	}
 }
 
-export default CartPage;
+export default withRouter(CartPage);

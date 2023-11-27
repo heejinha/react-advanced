@@ -1,4 +1,5 @@
 import { Children, Component, createContext, Fragment, isValidElement } from 'react';
+import { getComponentName } from './utils';
 
 const routerContext = createContext({});
 routerContext.displayName = 'RouterContext';
@@ -87,10 +88,33 @@ const Routes = ({ children }) => {
 
 const Route = () => null;
 
+const withRouter = (WrappedComponent) => {
+	const WithRouter = (props) => {
+		return (
+			<routerContext.Consumer>
+				{
+					({ path, changePath }) => {
+						const navigate = (nextPath) => {
+							if (path !== nextPath) changePath(nextPath);
+						}
+						const enhancedProps = { navigate };
+						return <WrappedComponent {...props} {...enhancedProps} />
+					}
+				}
+			</routerContext.Consumer>
+		)
+	}
+
+	WithRouter.displayName = `WithRouter(${ getComponentName(WrappedComponent)})`
+	return WithRouter;
+};
+
 export {
 	routerContext,
 	Router,
 	Routes,
 	Route,
-	Link
+	Link,
+	withRouter
 }
+
