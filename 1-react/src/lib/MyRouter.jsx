@@ -98,7 +98,15 @@ const withRouter = (WrappedComponent) => {
 							if (path !== nextPath) changePath(nextPath);
 						}
 						const match = (comparePath) => path === comparePath;
-						const enhancedProps = { navigate, match };
+						const params = () => {
+							const queryParams = new URLSearchParams(window.location.search);
+							const paramsObject = {};
+							for (const [key, value] of queryParams) {
+								paramsObject[key] = value;
+							}
+							return paramsObject;
+						}
+						const enhancedProps = { navigate, match, params };
 						return <WrappedComponent {...props} {...enhancedProps} />
 					}
 				}

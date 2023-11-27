@@ -26,7 +26,8 @@ class CartPage extends Component {
 
 	async fetch() {
 		try {
-			const product = await ProductApi.fetchProduct('CACDA421');
+			const {productId} = this.props.params();
+			const product = await ProductApi.fetchProduct(productId);
 			this.setState({ product });
 
 		} catch (e) {
