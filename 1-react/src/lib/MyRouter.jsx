@@ -97,7 +97,8 @@ const withRouter = (WrappedComponent) => {
 						const navigate = (nextPath) => {
 							if (path !== nextPath) changePath(nextPath);
 						}
-						const enhancedProps = { navigate };
+						const match = (comparePath) => path === comparePath;
+						const enhancedProps = { navigate, match };
 						return <WrappedComponent {...props} {...enhancedProps} />
 					}
 				}
