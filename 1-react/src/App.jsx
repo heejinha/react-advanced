@@ -1,6 +1,7 @@
 import { Component, createRef } from 'react';
 import MyReact from './lib/MyReact';
-import { Router, Routes, Route } from './lib/MyRouter';
+import { Layout } from './lib/MyLayout';
+import { Route, Router, Routes } from './lib/MyRouter';
 import CartPage from './pages/CartPage';
 import OrderPage from './pages/OrderPage';
 import ProductPage from './pages/ProductPage';
@@ -8,13 +9,17 @@ import { getComponentName } from './lib/utils';
 
 const App = () => {
 	return (
-		<Router>
-			<Routes>
-				<Route path="/cart" element={<CartPage />} />
-				<Route path="/order" element={<OrderPage />} />
-				<Route path="/" element={<ProductPage />} />
-			</Routes>
-		</Router>
+		<>
+			<Layout>
+				<Router>
+					<Routes>
+						<Route path="/cart" element={<CartPage />} />
+						<Route path="/order" element={<OrderPage />} />
+						<Route path="/" element={<ProductPage />} />
+					</Routes>
+				</Router>
+			</Layout>
+		</>
 	);
 };
 

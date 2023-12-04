@@ -6,6 +6,7 @@ import OrderDeliveryCard from './OrderDeliveryCard';
 import OrderPaymentCard from './OrderPaymentCard';
 import OrderStatusCard from './OrderStatusCard';
 import OrderApi from 'shared/api/OrderApi';
+import { withLayout } from '../../lib/MyLayout';
 
 
 class OrderPage extends Component {
@@ -18,9 +19,12 @@ class OrderPage extends Component {
 	}
 
 	async fetch() {
+		const { startLoading, finishLoading } = this.props;
 		try {
+			startLoading('주문 페이지 로딩 중...');
 			const order = await OrderApi.fetchMyOrder();
 			this.setState({ order });
+			finishLoading();
 		} catch (e) {
 			console.error(e);
 		}
@@ -54,4 +58,4 @@ class OrderPage extends Component {
 	}
 }
 
-export default OrderPage;
+export default withLayout(OrderPage);
