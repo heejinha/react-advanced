@@ -7,6 +7,7 @@ import PaymentButton from './PaymentButton';
 import ProductApi from 'shared/api/ProductApi';
 import { withRouter } from '../../lib/MyRouter';
 import { withLayout } from '../../lib/MyLayout';
+import ErrorDialog from '../../components/ErrorDialog';
 
 const fakeProduct = {
 	"id": "CACDA421",
@@ -26,19 +27,20 @@ class CartPage extends Component {
 	}
 
 	async fetch() {
-		const { params, startLoading, finishLoading } = this.props;
+		const { params, startLoading, finishLoading, openDialog } = this.props;
 		const { productId } = params();
 		if (!productId) return;
 
-		const {  } = this.props;
+		startLoading('장바구니에 상품 담는 중...');
 		try {
-			startLoading('장바구니에 상품 담는 중...');
 			const product = await ProductApi.fetchProduct(productId);
 			this.setState({ product });
-			finishLoading();
 		} catch (e) {
 			console.error(e);
+			openDialog(<ErrorDialog />);
+			return;
 		}
+		finishLoading();
 	}
 
 	handleSubmit(params) {

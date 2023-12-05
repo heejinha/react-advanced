@@ -5,7 +5,7 @@ import ProductApi from 'shared/api/ProductApi';
 import { Component } from 'react';
 import OrderAbleProductItem from './OrderAbleProductItem';
 import { withLayout } from '../../lib/MyLayout';
-import { Dialog } from '../../components/Dialog';
+import ErrorDialog from '../../components/ErrorDialog';
 
 class ProductPage extends Component {
 	constructor(props) {
@@ -17,15 +17,17 @@ class ProductPage extends Component {
 	}
 
 	async fetch() {
-		const { startLoading, finishLoading } = this.props;
+		const { startLoading, finishLoading, openDialog } = this.props;
+		startLoading('메뉴 목록 로딩 중...');
 		try {
-			startLoading('메뉴 목록 로딩 중...');
 			const productList = await ProductApi.fetchProductList();
 			this.setState({ productList });
-			finishLoading();
 		} catch(e) {
 			console.error(e);
+			openDialog(<ErrorDialog />);
+			return;
 		}
+		finishLoading();
 	}
 
 	async componentDidMount() {

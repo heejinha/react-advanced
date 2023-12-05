@@ -7,6 +7,7 @@ import OrderPaymentCard from './OrderPaymentCard';
 import OrderStatusCard from './OrderStatusCard';
 import OrderApi from 'shared/api/OrderApi';
 import { withLayout } from '../../lib/MyLayout';
+import ErrorDialog from '../../components/ErrorDialog';
 
 
 class OrderPage extends Component {
@@ -19,16 +20,17 @@ class OrderPage extends Component {
 	}
 
 	async fetch() {
-		const { startLoading, finishLoading } = this.props;
+		const { startLoading, finishLoading, openDialog } = this.props;
 		try {
 			startLoading('주문 페이지 로딩 중...');
 			const order = await OrderApi.fetchMyOrder();
 			this.setState({ order });
-			finishLoading();
 		} catch (e) {
 			console.error(e);
+			openDialog(<ErrorDialog />);
+			return;
 		}
-
+		finishLoading();
 	}
 
 	async componentDidMount() {
