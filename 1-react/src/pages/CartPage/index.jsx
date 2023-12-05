@@ -5,9 +5,11 @@ import ProductItem from '../../components/ProductItem';
 import OrderForm from './OrderForm';
 import PaymentButton from './PaymentButton';
 import ProductApi from 'shared/api/ProductApi';
+import OrderApi from 'shared/api/OrderApi';
 import { withRouter } from '../../lib/MyRouter';
 import { withLayout } from '../../lib/MyLayout';
 import ErrorDialog from '../../components/ErrorDialog';
+import PaymentSuccessDialog from './PaymentSuccessDialog';
 
 const fakeProduct = {
 	"id": "CACDA421",
@@ -43,10 +45,22 @@ class CartPage extends Component {
 		finishLoading();
 	}
 
-	handleSubmit(params) {
+	async handleSubmit(params) {
 		console.log(params);
+		const { startLoading, finishLoading, openDialog } = this.props;
+
+		startLoading('결제 중...');
+		try {
+			await OrderApi.createOrder(params);
+		} catch (e) {
+			openDialog(<ErrorDialog />);
+			return;
+		}
+		finishLoading();
+
 		// 결제 성공 후 페이지 이동
-		this.props.navigate('/order');
+		// this.props.navigate('/order');
+		openDialog(<PaymentSuccessDialog />);
 	}
 
 	async componentDidMount() {
