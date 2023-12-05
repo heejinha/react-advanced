@@ -2,6 +2,7 @@ import { Component, createContext } from 'react';
 import { BackDrop } from '../components/BackDrop';
 import { getComponentName } from './utils';
 import { Dialog } from '../components/Dialog';
+import { createPortal } from 'react-dom';
 
 export const layoutContext = createContext({});
 layoutContext.displayName = 'LayoutContext';
@@ -65,13 +66,12 @@ export const withLayout = (WrappedComponent) => {
 
 
 export const DialogContainer = withLayout(
-	() => {
-		return (
-			<layoutContext.Consumer>
-				{
-					({ dialog }) => dialog && <BackDrop>{ dialog }</BackDrop>
-				}
-			</layoutContext.Consumer>
+	({ dialog }) => (
+		dialog && (
+			createPortal(
+				<BackDrop>{ dialog }</BackDrop>,
+				document.querySelector('#dialog')
+			)
 		)
-	}
+	)
 );
