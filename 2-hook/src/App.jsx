@@ -5,11 +5,16 @@
 import MyReact from './lib/MyReact';
 
 function NameField() {
-	const [name, setName] = MyReact.useName('user1');
-	const handleChange = (e) => {
-		setName(e.target.value);
-	}
-	return <input value={name} onChange={handleChange} />;
+	const [firstName, setFirstName] = MyReact.useState('hehe');
+	const [lastName, setLastName] = MyReact.useState('ha');
+	const [age, setAge] = MyReact.useState(20);
+	return (
+		<>
+			<input value={firstName} onChange={({ target }) => setFirstName(target.value)} />
+			<input value={lastName} onChange={({ target }) => setLastName(target.value)} />
+			<input value={age} onChange={({ target }) => setAge(target.value)} />
+		</>
+	)
 }
 
 export default () => <NameField />;
