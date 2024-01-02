@@ -2,22 +2,54 @@
 
 // export default App;
 
+
+import { useState } from 'react';
 import MyReact from './lib/MyReact';
 
-function NameField() {
-	const [firstName, setFirstName] = MyReact.useState('hehe');
-	const [lastName, setLastName] = MyReact.useState('ha');
-	const [age, setAge] = MyReact.useState(20);
+const Counter = () => {
+	MyReact.resetCursor();
+
+	const [count, setCount] = useState(0);
+	const [name, setName] = useState(localStorage.getItem('name') || '');
+
+	const handleClick = () => setCount(count + 1);
+	const handleChangeName = (e) => setName(e.target.value);
+
+	MyReact.useEffect(() => {
+		document.title = `count: ${count}`;
+		console.log('effect 1');
+	}, [count, name]);
+
+	MyReact.useEffect(() => {
+		localStorage.setItem('name', name);
+		console.log('effect 2')
+	}, [name]);
+
+	console.log('counter rendered');
 	return (
 		<>
-			<input value={firstName} onChange={({ target }) => setFirstName(target.value)} />
-			<input value={lastName} onChange={({ target }) => setLastName(target.value)} />
-			<input value={age} onChange={({ target }) => setAge(target.value)} />
+			<button onClick={handleClick}>더하기</button>
+			<input value={name} onChange={handleChangeName}/>
 		</>
-	)
+	);
 }
+export default Counter;
 
-export default () => <NameField />;
+//
+// function NameField() {
+// 	const [firstName, setFirstName] = MyReact.useState('hehe');
+// 	const [lastName, setLastName] = MyReact.useState('ha');
+// 	const [age, setAge] = MyReact.useState(20);
+// 	return (
+// 		<>
+// 			<input value={firstName} onChange={({ target }) => setFirstName(target.value)} />
+// 			<input value={lastName} onChange={({ target }) => setLastName(target.value)} />
+// 			<input value={age} onChange={({ target }) => setAge(target.value)} />
+// 		</>
+// 	)
+// }
+//
+// export default () => <NameField />;
 
 // function Contract(props) {
 // 	const sign = () => {
