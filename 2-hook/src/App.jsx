@@ -18,12 +18,22 @@ const Counter = () => {
 	MyReact.useEffect(() => {
 		document.title = `count: ${count}`;
 		console.log('effect 1');
+
+		return function cleanup() {
+			document.title = '';
+			console.log('effect1 cleanup');
+		}
 	}, [count, name]);
 
 	MyReact.useEffect(() => {
 		localStorage.setItem('name', name);
 		console.log('effect 2')
 	}, [name]);
+
+	MyReact.useEffect(() => {
+		setName(localStorage.getItem('name') || '');
+		console.log('effect 3');
+	}, []);
 
 	console.log('counter rendered');
 	return (
@@ -33,7 +43,20 @@ const Counter = () => {
 		</>
 	);
 }
-export default Counter;
+export default () => {
+	const [mounted, setMounted] = useState(false);
+	const handleToggle = () => {
+		const nextMounted = !mounted;
+		if (!nextMounted) MyReact.cleanupEffects();
+		setMounted(nextMounted);
+	};
+
+	return <>
+		<button onClick={handleToggle}>component toggle</button>
+		{ mounted && <Counter /> }
+	</>;
+
+};
 
 //
 // function NameField() {
