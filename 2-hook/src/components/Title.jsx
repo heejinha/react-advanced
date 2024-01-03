@@ -3,7 +3,7 @@ const Title = ({  backUrl, children }) => {
 	if (backUrl) {
 		return (
 			<>
-				<a to={backUrl} />
+				<a href={backUrl} />
 				<h1 style={{ paddingRight: '44px'}}>{ children }</h1>
 			</>
 		)

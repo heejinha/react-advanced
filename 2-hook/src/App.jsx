@@ -1,62 +1,64 @@
-// const App = () => <>2-hook</>;
+import ProductPage from './pages/ProductPage';
 
-// export default App;
+const App = () => <><ProductPage /></>;
+
+export default App;
 
 
-import { useState } from 'react';
-import MyReact from './lib/MyReact';
-
-const Counter = () => {
-	MyReact.resetCursor();
-
-	const [count, setCount] = useState(0);
-	const [name, setName] = useState(localStorage.getItem('name') || '');
-
-	const handleClick = () => setCount(count + 1);
-	const handleChangeName = (e) => setName(e.target.value);
-
-	MyReact.useEffect(() => {
-		document.title = `count: ${count}`;
-		console.log('effect 1');
-
-		return function cleanup() {
-			document.title = '';
-			console.log('effect1 cleanup');
-		}
-	}, [count, name]);
-
-	MyReact.useEffect(() => {
-		localStorage.setItem('name', name);
-		console.log('effect 2')
-	}, [name]);
-
-	MyReact.useEffect(() => {
-		setName(localStorage.getItem('name') || '');
-		console.log('effect 3');
-	}, []);
-
-	console.log('counter rendered');
-	return (
-		<>
-			<button onClick={handleClick}>더하기</button>
-			<input value={name} onChange={handleChangeName}/>
-		</>
-	);
-}
-export default () => {
-	const [mounted, setMounted] = useState(false);
-	const handleToggle = () => {
-		const nextMounted = !mounted;
-		if (!nextMounted) MyReact.cleanupEffects();
-		setMounted(nextMounted);
-	};
-
-	return <>
-		<button onClick={handleToggle}>component toggle</button>
-		{ mounted && <Counter /> }
-	</>;
-
-};
+// import { useState } from 'react';
+// import MyReact from './lib/MyReact';
+//
+// const Counter = () => {
+// 	MyReact.resetCursor();
+//
+// 	const [count, setCount] = useState(0);
+// 	const [name, setName] = useState(localStorage.getItem('name') || '');
+//
+// 	const handleClick = () => setCount(count + 1);
+// 	const handleChangeName = (e) => setName(e.target.value);
+//
+// 	MyReact.useEffect(() => {
+// 		document.title = `count: ${count}`;
+// 		console.log('effect 1');
+//
+// 		return function cleanup() {
+// 			document.title = '';
+// 			console.log('effect1 cleanup');
+// 		}
+// 	}, [count, name]);
+//
+// 	MyReact.useEffect(() => {
+// 		localStorage.setItem('name', name);
+// 		console.log('effect 2')
+// 	}, [name]);
+//
+// 	MyReact.useEffect(() => {
+// 		setName(localStorage.getItem('name') || '');
+// 		console.log('effect 3');
+// 	}, []);
+//
+// 	console.log('counter rendered');
+// 	return (
+// 		<>
+// 			<button onClick={handleClick}>더하기</button>
+// 			<input value={name} onChange={handleChangeName}/>
+// 		</>
+// 	);
+// }
+// export default () => {
+// 	const [mounted, setMounted] = useState(false);
+// 	const handleToggle = () => {
+// 		const nextMounted = !mounted;
+// 		if (!nextMounted) MyReact.cleanupEffects();
+// 		setMounted(nextMounted);
+// 	};
+//
+// 	return <>
+// 		<button onClick={handleToggle}>component toggle</button>
+// 		{ mounted && <Counter /> }
+// 	</>;
+//
+// };
 
 //
 // function NameField() {
