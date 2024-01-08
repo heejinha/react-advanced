@@ -1,6 +1,8 @@
 import ProductPage from './pages/ProductPage';
+import CartPage from './pages/CartPage';
+import OrderPage from './pages/OrderPage';
 
-const App = () => <><ProductPage /></>;
+const App = () => <><OrderPage /></>;
 
 export default App;
 
