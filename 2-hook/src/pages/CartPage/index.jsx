@@ -6,15 +6,15 @@ import { useEffect, useState } from 'react';
 import ProductItem from '../../components/ProductItem';
 import OrderApi from 'shared/api/OrderApi';
 import OrderForm from './OrderForm';
+import { useParams } from '../../lib/MyRouter';
 
-const CartPage = ({ productId }) => {
+const CartPage = () => {
 	const [product, setProduct] = useState(null);
+	const { productId } = useParams();
 
-	const fetch = async () => {
-		if (!productId) return;
-
+	const fetch = async (id) => {
 		try {
-			const product = await ProductApi.fetchProduct(productId);
+			const product = await ProductApi.fetchProduct(id);
 			setProduct(product);
 		} catch (e) {
 			console.error(e);
@@ -32,8 +32,8 @@ const CartPage = ({ productId }) => {
 	}
 
 	useEffect(() => {
-		fetch();
-	}, []);
+		if (productId) fetch(productId);
+	}, [productId]);
 
 	return (
 		<div className="CartPage">

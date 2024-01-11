@@ -1,8 +1,10 @@
 import ProductItem from '../../components/ProductItem';
+import { useNavigate } from '../../lib/MyRouter';
 
-const OrderAbleProductItem = ({ product, navigate }) => {
+const OrderAbleProductItem = ({ product }) => {
+	const navigate = useNavigate();
 	const handleClick = () => {
-		// navigate(`/cart?productId=${product.id}`)
+		navigate(`/cart?productId=${product.id}`)
 	};
 	return (
 		<ProductItem

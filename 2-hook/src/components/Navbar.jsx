@@ -1,11 +1,15 @@
+import { Link, useMatch } from '../lib/MyRouter';
 
-const Navbar = ({ match }) => {
+const Navbar = () => {
+	const match = useMatch();
 	return (
 		<nav className="Navbar">
-			<a href="/">
+			<Link to="/" className={match('/') ? 'active' : ''}>
 				메뉴목록
-			</a>
-			<a href="/order">주문내역</a>
+			</Link>
+			<Link to="/order" className={match('/order') ? 'active' : ''}>
+				주문내역
+			</Link>
 		</nav>
 	);
 }
