@@ -6,17 +6,24 @@ import OrderPaymentCard from './OrderPaymentCard';
 import OrderDeliveryCard from './OrderDeliveryCard';
 import { useEffect, useState } from 'react';
 import OrderApi from 'shared/api/OrderApi';
+import { useDialog, useLoading } from '../../lib/MyLayout';
+import ErrorDialog from '../../components/ErrorDialog';
 
 const OrderPage = () => {
 	const [order, setOrder] = useState(null);
+	const { openDialog } = useDialog();
+	const { startLoading, finishLoading } = useLoading();
 
 	const fetch = async () => {
+		startLoading('주문 정보 로딩 중');
 		try {
 			const order = await OrderApi.fetchMyOrder();
 			setOrder(order);
 		} catch (e) {
 			console.error(e);
-			return;
+			openDialog(<ErrorDialog />);
+		} finally {
+			finishLoading();
 		}
 	}
 

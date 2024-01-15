@@ -1,15 +1,18 @@
 import { Dialog } from '../../components/Dialog';
 import Button from '../../components/Button';
 import { useNavigate } from '../../lib/MyRouter';
+import { useDialog } from '../../lib/MyLayout';
 
-const PaymentSuccessDialog = ({ closeDialog }) => {
+const PaymentSuccessDialog = () => {
 	const navigate = useNavigate();
+	const {closeDialog} = useDialog();
+
 	const handleClickNo = () => {
-		// closeDialog();
+		closeDialog();
 		navigate('/');
 	}
 	const handleClickYes = () => {
-		// closeDialog();
+		closeDialog();
 		navigate('/order');
 	}
 	return (

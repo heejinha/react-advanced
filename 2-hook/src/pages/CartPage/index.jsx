@@ -7,28 +7,45 @@ import ProductItem from '../../components/ProductItem';
 import OrderApi from 'shared/api/OrderApi';
 import OrderForm from './OrderForm';
 import { useParams } from '../../lib/MyRouter';
+import { useDialog, useLoading } from '../../lib/MyLayout';
+import ErrorDialog from '../../components/ErrorDialog';
+import PaymentSuccessDialog from './PaymentSuccessDialog';
 
 const CartPage = () => {
 	const [product, setProduct] = useState(null);
 	const { productId } = useParams();
+	const { startLoading, finishLoading } = useLoading();
+	const { openDialog } = useDialog();
 
 	const fetch = async (id) => {
+		startLoading('장바구니 정보 로딩 중');
 		try {
 			const product = await ProductApi.fetchProduct(id);
 			setProduct(product);
 		} catch (e) {
 			console.error(e);
+			openDialog(<ErrorDialog />);
+		} finally {
+			finishLoading();
 		}
 	}
 
 	const handleSubmit = async (params) => {
 		console.log(params);
+		startLoading('결제 중');
 		try {
 			await OrderApi.createOrder(params);
 		} catch (e) {
 			console.error(e);
+			openDialog(<ErrorDialog />);
+			return;
+		} finally {
+			finishLoading();
+
 		}
+
 		// 결제 성공 후 페이지 이동
+		openDialog(<PaymentSuccessDialog />);
 	}
 
 	useEffect(() => {

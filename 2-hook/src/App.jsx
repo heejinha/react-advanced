@@ -5,16 +5,19 @@ import MyReact from './lib/MyReact';
 import { useState } from 'react';
 import button from './components/Button';
 import { Route, Router, Routes } from './lib/MyRouter';
+import { Layout } from './lib/MyLayout';
 
 const App = () => (
 	<>
-		<Router>
-			<Routes>
-				<Route path="/cart" element={<CartPage />} />
-				<Route path="/order" element={<OrderPage />} />
-				<Route path="/" element={<ProductPage />} />
-			</Routes>
-		</Router>
+		<Layout>
+			<Router>
+				<Routes>
+					<Route path="/cart" element={<CartPage />} />
+					<Route path="/order" element={<OrderPage />} />
+					<Route path="/" element={<ProductPage />} />
+				</Routes>
+			</Router>
+		</Layout>
 	</>
 );
 
