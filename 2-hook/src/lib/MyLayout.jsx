@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { BackDrop } from '../components/BackDrop';
-import { Dialog } from '../components/Dialog';
+import Dialog from '../components/Dialog';
 
 export const layoutContext = createContext({});
 layoutContext.displayName = 'LayoutContext';

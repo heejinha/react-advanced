@@ -1,6 +1,6 @@
-import { Dialog } from './Dialog';
 import Button from './Button';
 import { useDialog } from '../lib/MyLayout';
+import Dialog from './Dialog';
 
 const ErrorDialog = () => {
 	const { closeDialog } = useDialog();

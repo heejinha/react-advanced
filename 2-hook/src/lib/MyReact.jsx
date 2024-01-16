@@ -1,4 +1,4 @@
-import { useState as reactUseState } from 'react';
+import { memo, useState as reactUseState } from 'react';
 import createEventEmitter from 'shared/lib/EventEmitter';
 
 
@@ -95,10 +95,27 @@ const MyReact = (function MyReact() {
 		}, [context]);
 
 		return value;
-
 	}
 
-	return { useState, useEffect, createContext, useContext, resetCursor, cleanupEffects }
+	function useRef(initialValue) {
+		if (!isInitialized[cursor]) {
+			memorizedStates[cursor] = { current: initialValue };
+			isInitialized[cursor] = true;
+		}
+		const memorizedStates = memorizedStates[cursor];
+		cursor = cursor + 1;
+		return memorizedStates;
+	}
+
+	return {
+		useState,
+		useEffect,
+		useRef,
+		createContext,
+		useContext,
+		resetCursor,
+		cleanupEffects
+	}
 })();
 
 export default MyReact;

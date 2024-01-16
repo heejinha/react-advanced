@@ -2,7 +2,7 @@ import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import OrderPage from './pages/OrderPage';
 import MyReact from './lib/MyReact';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import button from './components/Button';
 import { Route, Router, Routes } from './lib/MyRouter';
 import { Layout } from './lib/MyLayout';
@@ -23,6 +23,20 @@ const App = () => (
 
 export default App;
 
+
+// export default () => {
+// 	const [state, setState] = useState(0);
+// 	const ref1 = useRef(1);
+//
+// 	if (state > 2) {
+// 		ref1.current = ref1.current + 1;
+// 	}
+//
+// 	return <>
+// 		<button onClick={() => setState(state + 1)}>state 증가 {state}</button>
+// 		<div>{ref1.current}</div>
+// 	</>;
+// }
 // const countContext = MyReact.createContext({});
 // const CountProvider = ({ children }) => {
 // 	const [count, setCount] = useState(0);

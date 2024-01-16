@@ -1,4 +1,4 @@
-import { Dialog } from '../../components/Dialog';
+import Dialog from '../../components/Dialog';
 import Button from '../../components/Button';
 import { useNavigate } from '../../lib/MyRouter';
 import { useDialog } from '../../lib/MyLayout';
