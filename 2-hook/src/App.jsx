@@ -1,8 +1,7 @@
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import OrderPage from './pages/OrderPage';
-import MyReact from './lib/MyReact';
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import button from './components/Button';
 import { Route, Router, Routes } from './lib/MyRouter';
 import { Layout } from './lib/MyLayout';
@@ -21,8 +20,97 @@ const App = () => (
 	</>
 );
 
-export default App;
+// export default App;
 
+
+export default () => {
+	const [values, setValues] = useState({
+		email: '',
+		password: ''
+	});
+
+	const [errors, setErrors] = useState({
+		email: '',
+		password: ''
+	});
+
+	const [touched, setTouched] = useState({
+		email: false,
+		password: false
+	});
+
+	const validate = () => {
+		const validateResult = {
+			email: '',
+			password: ''
+		};
+
+		if (!values.email) validateResult.email = '이메일을 입력하세요.';
+		if (!values.password) validateResult.password = '비밀번호를 입력하세요.';
+		return validateResult;
+	};
+
+	const handleChange = (e) => {
+		setValues({
+			...values,
+			[e.target.name]: e.target.value
+		});
+	};
+
+	const handleBlur = (e) => {
+		setTouched({
+			...touched,
+			[e.target.name]: true
+		});
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		setTouched({
+			email: true, password: true
+		});
+
+		const result = validate();
+		setErrors(result);
+		if (Object.values(result).some(Boolean)) return;
+
+		console.log(values);
+	};
+
+	useEffect(() => {
+		setErrors(validate(values));
+	}, [values])
+
+	return (
+		<>
+			<form noValidate onSubmit={handleSubmit}>
+				<input
+					type="text"
+					name="email"
+					value={values.email}
+					onChange={handleChange}
+					onBlur={handleBlur}
+					placeholder="Email"
+					autoFocus
+					required
+				/>
+				{ touched.email && errors.email && <span>{errors.email}</span>}
+				<input
+					type="password"
+					name="password"
+					value={values.password}
+					onChange={handleChange}
+					onBlur={handleBlur}
+					placeholder="Password"
+					required
+				/>
+				{ touched.password && errors.password && <span>{errors.password}</span>}
+				<button>Login</button>
+			</form>
+		</>
+	);
+};
 
 // export default () => {
 // 	const [state, setState] = useState(0);
