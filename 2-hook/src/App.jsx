@@ -1,10 +1,10 @@
 import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import OrderPage from './pages/OrderPage';
-import { useEffect, useState } from 'react';
 import button from './components/Button';
 import { Route, Router, Routes } from './lib/MyRouter';
 import { Layout } from './lib/MyLayout';
+import { ErrorMessage, Field, Form, useForm } from './lib/MyForm';
 
 const App = () => (
 	<>
@@ -24,22 +24,7 @@ const App = () => (
 
 
 export default () => {
-	const [values, setValues] = useState({
-		email: '',
-		password: ''
-	});
-
-	const [errors, setErrors] = useState({
-		email: '',
-		password: ''
-	});
-
-	const [touched, setTouched] = useState({
-		email: false,
-		password: false
-	});
-
-	const validate = () => {
+	const validate = (values) => {
 		const validateResult = {
 			email: '',
 			password: ''
@@ -50,64 +35,19 @@ export default () => {
 		return validateResult;
 	};
 
-	const handleChange = (e) => {
-		setValues({
-			...values,
-			[e.target.name]: e.target.value
-		});
-	};
-
-	const handleBlur = (e) => {
-		setTouched({
-			...touched,
-			[e.target.name]: true
-		});
-	};
-
-	const handleSubmit = (e) => {
-		e.preventDefault();
-
-		setTouched({
-			email: true, password: true
-		});
-
-		const result = validate();
-		setErrors(result);
-		if (Object.values(result).some(Boolean)) return;
-
+	const onSubmit = (values) => {
 		console.log(values);
 	};
 
-	useEffect(() => {
-		setErrors(validate(values));
-	}, [values])
-
 	return (
 		<>
-			<form noValidate onSubmit={handleSubmit}>
-				<input
-					type="text"
-					name="email"
-					value={values.email}
-					onChange={handleChange}
-					onBlur={handleBlur}
-					placeholder="Email"
-					autoFocus
-					required
-				/>
-				{ touched.email && errors.email && <span>{errors.email}</span>}
-				<input
-					type="password"
-					name="password"
-					value={values.password}
-					onChange={handleChange}
-					onBlur={handleBlur}
-					placeholder="Password"
-					required
-				/>
-				{ touched.password && errors.password && <span>{errors.password}</span>}
+			<Form initialValues={{ email: '', password: '' }} validate={validate} onSubmit={onSubmit}>
+				<Field type="text" name="email" />
+				<ErrorMessage name="email" />
+				<Field type="password" name="password" />
+				<ErrorMessage name="password" />
 				<button>Login</button>
-			</form>
+			</Form>
 		</>
 	);
 };
