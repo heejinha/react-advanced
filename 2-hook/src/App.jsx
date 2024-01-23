@@ -20,37 +20,37 @@ const App = () => (
 	</>
 );
 
-// export default App;
+export default App;
 
 
-export default () => {
-	const validate = (values) => {
-		const validateResult = {
-			email: '',
-			password: ''
-		};
+// export default () => {
+// 	const validate = (values) => {
+// 		const validateResult = {
+// 			email: '',
+// 			password: ''
+// 		};
 
-		if (!values.email) validateResult.email = '이메일을 입력하세요.';
-		if (!values.password) validateResult.password = '비밀번호를 입력하세요.';
-		return validateResult;
-	};
+// 		if (!values.email) validateResult.email = '이메일을 입력하세요.';
+// 		if (!values.password) validateResult.password = '비밀번호를 입력하세요.';
+// 		return validateResult;
+// 	};
 
-	const onSubmit = (values) => {
-		console.log(values);
-	};
+// 	const onSubmit = (values) => {
+// 		console.log(values);
+// 	};
 
-	return (
-		<>
-			<Form initialValues={{ email: '', password: '' }} validate={validate} onSubmit={onSubmit}>
-				<Field type="text" name="email" />
-				<ErrorMessage name="email" />
-				<Field type="password" name="password" />
-				<ErrorMessage name="password" />
-				<button>Login</button>
-			</Form>
-		</>
-	);
-};
+// 	return (
+// 		<>
+// 			<Form initialValues={{ email: '', password: '' }} validate={validate} onSubmit={onSubmit}>
+// 				<Field type="text" name="email" />
+// 				<ErrorMessage name="email" />
+// 				<Field type="password" name="password" />
+// 				<ErrorMessage name="password" />
+// 				<button>Login</button>
+// 			</Form>
+// 		</>
+// 	);
+// };
 
 // export default () => {
 // 	const [state, setState] = useState(0);

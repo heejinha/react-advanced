@@ -1,4 +1,4 @@
-const FormControl = ({ label, htmlFor, required, children }) => {
+const FormControl = ({ label, htmlFor, required, children, error }) => {
 	return (
 		<div className="FormControl">
 			<label htmlFor={htmlFor}>
@@ -6,6 +6,7 @@ const FormControl = ({ label, htmlFor, required, children }) => {
 				{ required && <span className="required">*</span> }
 			</label>
 			{ children }
+			{ error && <div className="error">{error}</div>}
 		</div>
 	);
 }
