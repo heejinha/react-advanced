@@ -5,7 +5,8 @@ import button from './components/Button';
 import { Route, Router, Routes } from './lib/MyRouter';
 import { Layout } from './lib/MyLayout';
 import { ErrorMessage, Field, Form, useForm } from './lib/MyForm';
-import { useState } from 'react';
+import MyReact from './lib/MyReact';
+import { useReducer, useState } from 'react';
 
 const App = () => (
 	<>
@@ -23,51 +24,43 @@ const App = () => (
 
 // export default App;
 
-const useRegisterForm = () => {
-	const [state, setState] = useState({
-		value: { nickname: '', password: ''},
-		error: { nickname: '', password: ''}
-	});
-
-	const handleChange = ({ target }) => {
-		setState({
-			...state,
-			value: {
-				...state.value,
-				[target.name]: target.value
-			}
-		})
-
-	};
-
-	const handleReset = () => {
-		setState({
-			value: { nickname: '', password: ''},
-			error: { nickname: '', password: ''}
-		});
-	};
-
-	const handleSubmit = ({ target }) => {
-		setState({
-			...state,
-			error: {
-				nickname: /^\w+$/.test(state.value.nickname) ? '' : '영문, 숫자만 입력',
-				password: /^.{3,6}$/.test(state.value.password) ? '' : '3~6글자 입력'
-			}
-		})
-
-	};
-
-	return {
-		state,
-		handleChange,
-		handleReset,
-		handleSubmit
-	};
+const initialState = {
+	value: { nickname: '', password: ''},
+	error: { nickname: '', password: ''}
 };
 
+const reducer = (state, action) => {
+	switch (action.type) {
+		case 'CHANGE':
+			return {
+				...state,
+				value: {
+					...state.value,
+					[action.name]: action.value
+				}
+			};
+		case 'RESET':
+			return initialState;
+		case 'VALIDATE':
+			return {
+				...state,
+				error: {
+					nickname: /^\w+$/.test(state.value.nickname) ? '' : '영문, 숫자만 입력',
+					password: /^.{3,6}$/.test(state.value.password) ? '' : '3~6글자 입력'
+				}
+			};
+		default:
+			throw '알 수 없는 액션';
+	}
+}
+
 const RegisterForm = () => {
-	const { state, handleChange, handleReset, handleSubmit} = useRegisterForm();
+	// const { state, handleChange, handleReset, handleSubmit} = useRegisterForm();
+	const [state, dispatch] = MyReact.useReducer(reducer, initialState);
+
+	const handleChange = ({ target }) => dispatch({ type: 'CHANGE', name: target.name, value: target.value });
+	const handleReset = () => dispatch({ type: 'RESET'});
+	const handleSubmit = () => dispatch({ type: 'VALIDATE'});
 
 	return (
 		<>

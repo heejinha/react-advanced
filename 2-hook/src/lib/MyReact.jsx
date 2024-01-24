@@ -107,6 +107,40 @@ const MyReact = (function MyReact() {
 		return memorizedStates;
 	}
 
+	function createStore(reducer, initialValue) {
+		let currentState = initialValue;
+		const listeners = [];
+
+		const getState = () => currentState;
+		const subscribe = (listener) => listeners.push(listener);
+
+		const dispatch = (action) => {
+			const nextState = reducer(currentState, action);
+			if (nextState !== currentState) {
+				currentState = nextState;
+				listeners.forEach(listener => listener());
+			}
+		};
+
+		return {
+			getState,
+			subscribe,
+			dispatch
+		};
+	}
+
+	function useReducer(reducer, initialValue) {
+		const { forceUpdate } = useForceUpdate();
+		if (!isInitialized[cursor]) {
+			memorizedStates[cursor] = createStore(reducer, initialValue);
+			isInitialized[cursor] = true;
+		}
+		const store = memorizedStates[cursor];
+		store.subscribe(() => forceUpdate());
+		cursor = cursor + 1;
+		return [store.getState(), store.dispatch];
+	}
+
 	return {
 		useState,
 		useEffect,
@@ -114,7 +148,9 @@ const MyReact = (function MyReact() {
 		createContext,
 		useContext,
 		resetCursor,
-		cleanupEffects
+		cleanupEffects,
+		createStore,
+		useReducer
 	}
 })();
 
