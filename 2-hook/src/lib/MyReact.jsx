@@ -1,4 +1,4 @@
-import { memo, useState as reactUseState } from 'react';
+import { createElement, memo, useState as reactUseState } from 'react';
 import createEventEmitter from 'shared/lib/EventEmitter';
 
 
@@ -141,6 +141,52 @@ const MyReact = (function MyReact() {
 		return [store.getState(), store.dispatch];
 	}
 
+	function useMemo(nextCreate, deps) {
+		if (!memorizedStates[cursor]) {
+			const nextValue = nextCreate();
+			memorizedStates[cursor] = [nextValue, deps];
+			cursor = cursor + 1;
+			return nextValue;
+		}
+
+		const nextDeps = deps;
+		const [prevValue, prevDeps] = memorizedStates[cursor];
+		if (prevDeps.every((prev, index) => prev === nextDeps[index])) {
+			cursor = cursor + 1;
+			return prevValue;
+		}
+
+		const nextValue = nextCreate();
+		memorizedStates[cursor] = [nextValue, deps];
+		cursor = cursor + 1;
+		return nextValue;
+	};
+
+	function memo(targetComponent) {
+		return (nextProps) => {
+			if (!targetComponent.memorizedStates) {
+				const nextValue = createElement(targetComponent, nextProps);
+				targetComponent.memorizedStates = [nextValue, nextProps];
+				return nextValue;
+			}
+
+			const [prevValue, prevProps] = targetComponent.memorizedStates;
+			const sameProps = Object.keys(nextProps).every(key => nextProps[key] === prevProps[key]);
+			if (sameProps) {
+				return prevValue;
+			}
+
+			const nextValue = createElement(targetComponent, nextProps);
+			targetComponent.memorizedStates = [nextValue, nextProps];
+			return nextValue;
+
+		}
+	};
+
+	function useCallback(callback, depps) {
+		return useMemo(() => callback, deps);
+	}
+
 	return {
 		useState,
 		useEffect,
@@ -150,7 +196,10 @@ const MyReact = (function MyReact() {
 		resetCursor,
 		cleanupEffects,
 		createStore,
-		useReducer
+		useReducer,
+		useMemo,
+		memo,
+		useCallback
 	}
 })();
 

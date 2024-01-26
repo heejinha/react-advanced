@@ -22,74 +22,140 @@ const App = () => (
 	</>
 );
 
-export default App;
+// export default App;
 
-const initialState = {
-	value: { nickname: '', password: ''},
-	error: { nickname: '', password: ''}
-};
+const Board = ({ posts, tag }) => {
+	MyReact.resetCursor();
 
-const reducer = (state, action) => {
-	switch (action.type) {
-		case 'CHANGE':
-			return {
-				...state,
-				value: {
-					...state.value,
-					[action.name]: action.value
-				}
-			};
-		case 'RESET':
-			return initialState;
-		case 'VALIDATE':
-			return {
-				...state,
-				error: {
-					nickname: /^\w+$/.test(state.value.nickname) ? '' : '영문, 숫자만 입력',
-					password: /^.{3,6}$/.test(state.value.password) ? '' : '3~6글자 입력'
-				}
-			};
-		default:
-			throw '알 수 없는 액션';
-	}
-}
+	const [darkTheme, setDartTheme] = useState(false);
 
-const RegisterForm = () => {
-	// const { state, handleChange, handleReset, handleSubmit} = useRegisterForm();
-	const [state, dispatch] = MyReact.useReducer(reducer, initialState);
+	const filterPosts = () => {
+		return posts.filter((post) => (tag ? post.tag === tag : true));
+	};
 
-	const handleChange = ({ target }) => dispatch({ type: 'CHANGE', name: target.name, value: target.value });
-	const handleReset = () => dispatch({ type: 'RESET'});
-	const handleSubmit = () => dispatch({ type: 'VALIDATE'});
+	const filteredPosts = MyReact.useMemo(filterPosts, [posts, tag]);
+
+	const handleClick = MyReact.useCallback((id) => {
+		console.log('click', id);
+	}, []);
+
+	console.log('board rendered');
 
 	return (
 		<>
 			<div>
-				<label htmlFor="">닉네임 : </label>
-				<input
-					type="text"
-					name="nickname"
-					value={state.value.nickname}
-					onChange={handleChange}
-				/>
-				<span>{state.error.nickname}</span>
+				<button onClick={() => setDartTheme(!darkTheme)}>테마 변경</button>
+				<label htmlFor="">
+					{ darkTheme ? '어두움' : '밝음'}
+				</label>
 			</div>
-			<div>
-				<label htmlFor="">비밀번호 : </label>
-				<input
-					type="text"
-					name="password"
-					value={state.value.password}
-					onChange={handleChange}
-				/>
-				<span>{state.error.password}</span>
-			</div>
-			<button onClick={handleReset}>초기화</button>
-			<button onClick={handleSubmit}>회원가입</button>
+			<FilteredPosts value={filteredPosts} onClick={handleClick} />
 		</>
-	);
-
+	)
 };
+
+const FilteredPosts = MyReact.memo(({ value, onClick }) => {
+	console.log('filtered memo rendered');
+	return (
+		<ul>
+			{
+				value.map(({ id, content, tag }) => (
+					<li key={id} onClick={() => onClick(id)}>
+						{content}
+						<span>#{tag}</span>
+					</li>
+				))
+			}
+		</ul>
+	)
+
+})
+
+export default () => {
+	const [tag, setTag] = useState('');
+	return (
+		<>
+			<button onClick={() => setTag('')}>All</button>
+			<button onClick={() => setTag('tag1')}>tag1</button>
+			<button onClick={() => setTag('tag2')}>tag2</button>
+			<Board
+				posts={[
+					{ id: 'id1', content: 'content1', tag: 'tag1' },
+					{ id: 'id2', content: 'content2', tag: 'tag2' },
+					{ id: 'id3', content: 'content3', tag: 'tag1' },
+				]}
+				tag={tag}
+			/>
+		</>
+	)
+}
+
+// const initialState = {
+// 	value: { nickname: '', password: ''},
+// 	error: { nickname: '', password: ''}
+// };
+
+// const reducer = (state, action) => {
+// 	switch (action.type) {
+// 		case 'CHANGE':
+// 			return {
+// 				...state,
+// 				value: {
+// 					...state.value,
+// 					[action.name]: action.value
+// 				}
+// 			};
+// 		case 'RESET':
+// 			return initialState;
+// 		case 'VALIDATE':
+// 			return {
+// 				...state,
+// 				error: {
+// 					nickname: /^\w+$/.test(state.value.nickname) ? '' : '영문, 숫자만 입력',
+// 					password: /^.{3,6}$/.test(state.value.password) ? '' : '3~6글자 입력'
+// 				}
+// 			};
+// 		default:
+// 			throw '알 수 없는 액션';
+// 	}
+// }
+
+// const RegisterForm = () => {
+// 	// const { state, handleChange, handleReset, handleSubmit} = useRegisterForm();
+// 	const [state, dispatch] = MyReact.useReducer(reducer, initialState);
+
+// 	const handleChange = ({ target }) => dispatch({ type: 'CHANGE', name: target.name, value: target.value });
+// 	const handleReset = () => dispatch({ type: 'RESET'});
+// 	const handleSubmit = () => dispatch({ type: 'VALIDATE'});
+
+// 	return (
+// 		<>
+// 			<div>
+// 				<label htmlFor="">닉네임 : </label>
+// 				<input
+// 					type="text"
+// 					name="nickname"
+// 					value={state.value.nickname}
+// 					onChange={handleChange}
+// 				/>
+// 				<span>{state.error.nickname}</span>
+// 			</div>
+// 			<div>
+// 				<label htmlFor="">비밀번호 : </label>
+// 				<input
+// 					type="text"
+// 					name="password"
+// 					value={state.value.password}
+// 					onChange={handleChange}
+// 				/>
+// 				<span>{state.error.password}</span>
+// 			</div>
+// 			<button onClick={handleReset}>초기화</button>
+// 			<button onClick={handleSubmit}>회원가입</button>
+// 		</>
+// 	);
+
+// };
 
 // export default RegisterForm;
 
