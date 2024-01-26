@@ -22,7 +22,7 @@ const App = () => (
 	</>
 );
 
-// export default App;
+export default App;
 
 const initialState = {
 	value: { nickname: '', password: ''},
@@ -91,7 +91,7 @@ const RegisterForm = () => {
 
 };
 
-export default RegisterForm;
+// export default RegisterForm;
 
 
 // export default () => {

@@ -1,4 +1,5 @@
 import { createContext, createElement, useContext, useEffect, useState } from 'react';
+import { useForm as useReducerForm } from './MyFormReducer';
 
 export const useForm = ({ initialValues, validate, onSubmit }) => {
 	const [values, setValues] = useState(initialValues);
@@ -68,7 +69,9 @@ const formContext = createContext({});
 formContext.displayName = 'FormContext';
 
 export const Form = ({ id, className, children, ...rest }) => {
-	const formValue = useForm({ ...rest });
+	debugger;
+	const formValue = useReducerForm({ ...rest });
+	// const formValue = useForm({ ...rest });
 	return (
 		<formContext.Provider value={formValue}>
 			<form noValidate id={id} className={className} onSubmit={formValue.handleSubmit}>
