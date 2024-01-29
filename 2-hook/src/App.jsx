@@ -22,7 +22,7 @@ const App = () => (
 	</>
 );
 
-// export default App;
+export default App;
 
 const Board = ({ posts, tag }) => {
 	MyReact.resetCursor();
@@ -71,24 +71,24 @@ const FilteredPosts = MyReact.memo(({ value, onClick }) => {
 
 })
 
-export default () => {
-	const [tag, setTag] = useState('');
-	return (
-		<>
-			<button onClick={() => setTag('')}>All</button>
-			<button onClick={() => setTag('tag1')}>tag1</button>
-			<button onClick={() => setTag('tag2')}>tag2</button>
-			<Board
-				posts={[
-					{ id: 'id1', content: 'content1', tag: 'tag1' },
-					{ id: 'id2', content: 'content2', tag: 'tag2' },
-					{ id: 'id3', content: 'content3', tag: 'tag1' },
-				]}
-				tag={tag}
-			/>
-		</>
-	)
-}
+// export default () => {
+// 	const [tag, setTag] = useState('');
+// 	return (
+// 		<>
+// 			<button onClick={() => setTag('')}>All</button>
+// 			<button onClick={() => setTag('tag1')}>tag1</button>
+// 			<button onClick={() => setTag('tag2')}>tag2</button>
+// 			<Board
+// 				posts={[
+// 					{ id: 'id1', content: 'content1', tag: 'tag1' },
+// 					{ id: 'id2', content: 'content2', tag: 'tag2' },
+// 					{ id: 'id3', content: 'content3', tag: 'tag1' },
+// 				]}
+// 				tag={tag}
+// 			/>
+// 		</>
+// 	)
+// }
 
 // const initialState = {
 // 	value: { nickname: '', password: ''},
