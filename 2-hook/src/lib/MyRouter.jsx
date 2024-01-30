@@ -1,4 +1,4 @@
-import { Children, createContext, Fragment, isValidElement, useContext, useEffect, useState } from 'react';
+import { Children, createContext, Fragment, isValidElement, useContext, useEffect, useMemo, useState } from 'react';
 
 const routerContext = createContext({});
 routerContext.displayName = 'RouterContext';
@@ -81,11 +81,12 @@ export const useMatch = () => {
 };
 
 export const useParams = () => {
-	// TODO useMemo 적용
-	const queryParams = new URLSearchParams(window.location.search);
-	const paramsObject = {};
-	for (const [key, value] of queryParams) {
-		paramsObject[key] = value;
-	}
-	return paramsObject;
+	return useMemo(() => {
+		const params =  new URLSearchParams(window.location.search);
+		const paramsObject = {};
+		for (const [key, value] of params) {
+			paramsObject[key] = value;
+		}
+		return paramsObject;
+	}, []);
 };
