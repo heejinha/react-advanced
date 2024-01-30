@@ -69,7 +69,6 @@ const formContext = createContext({});
 formContext.displayName = 'FormContext';
 
 export const Form = ({ id, className, children, ...rest }) => {
-	debugger;
 	const formValue = useReducerForm({ ...rest });
 	// const formValue = useForm({ ...rest });
 	return (
