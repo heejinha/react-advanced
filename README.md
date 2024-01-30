@@ -1,7 +1,8 @@
-# 인프런 - [리액트 2부] 고급 주제와 훅
+# 인**프**런 - [리액트 2부] 고급 주제와 훅
 
 ### 강의자료
 https://jeonghwan-kim.github.io/2023/06/24/lecture-react-season2-part1
+https://jeonghwan-kim.github.io/dev/2022/04/24/use-effect.html
 
 ### 공통
 - [x] 0.1 화면구성: 3단 레이아웃이다. 상단, 중앙, 하단으로 구성된다. (UI)
